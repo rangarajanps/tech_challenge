@@ -1,0 +1,14 @@
+# setup Go
+wget -P /tmp https://golang.org/dl/go1.15.6.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf /tmp/go1.15.6.linux-amd64.tar.gz
+export PATH=$PATH:/usr/local/go/bin
+
+# grab the source file
+wget https://raw.githubusercontent.com/rangarajanps/tech_challenge/main/challenge2/metadata.go
+
+# print meta-data
+go run metadata.go
+
+# pretty print meta-data
+go run metadata.go --prettyprint
+

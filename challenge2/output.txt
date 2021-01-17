@@ -1,0 +1,8 @@
+[ec2-user@ip-172-31-91-171 ~]$ go run metadata.go --prettyprint | grep ami-id
+  "ami-id": "ami-0be2609ba883822ec",
+[ec2-user@ip-172-31-91-171 ~]$ go run metadata.go --prettyprint | grep hostname
+  "hostname": "ip-172-31-91-171.ec2.internal",
+  "local-hostname": "ip-172-31-91-171.ec2.internal",
+          "local-hostname": "ip-172-31-91-171.ec2.internal",
+          "public-hostname": "ec2-54-226-253-167.compute-1.amazonaws.com",
+  "public-hostname": "ec2-54-226-253-167.compute-1.amazonaws.com",
