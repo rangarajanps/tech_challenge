@@ -1,0 +1,72 @@
+service: students-api
+
+custom:
+  studentsTableName: 'java-students-${self:provider.stage}'
+
+provider:
+  name: aws
+  runtime: java8
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'eu-west-2'}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource:
+        - { "Fn::GetAtt": ["StudentsDynamoDBTable", "Arn" ] }
+  environment:
+    STUDENTS_TABLE_NAME: ${self:custom.studentsTableName}
+
+package:
+  artifact: 'target/${self:service}-${self:provider.stage}.jar'
+
+functions:
+  listStudent:
+    handler: com.serverless.ListStudentHandler
+    events:
+      - http:
+          path: /students
+          method: get
+  getStudent:
+    handler: com.serverless.GetStudentHandler
+    events:
+      - http:
+          path: /students/{id}
+          method: get
+  createStudent:
+    handler: com.serverless.CreateStudentHandler
+    events:
+      - http:
+          path: /students
+          method: post
+  deleteStudent:
+    handler: com.serverless.DeleteStudentHandler
+    events:
+      - http:
+          path: /students/{id}
+          method: delete
+
+resources:
+  Resources:
+    StudentsDynamoDBTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.studentsTableName}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: name
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+          - AttributeName: name
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 100
+          WriteCapacityUnits: 100
