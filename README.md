@@ -1,2 +1,3 @@
-# tech_challenge
+# Tech Challenge Solutions
+
 Solution to 3 technical challenges
