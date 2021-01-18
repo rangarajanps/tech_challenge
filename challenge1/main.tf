@@ -80,21 +80,14 @@ resource "aws_eip" "ubuntu" {
   instance = aws_instance.ubuntu.id
 }
 
-module "dynamodb_table" {
-  source   = "terraform-aws-modules/dynamodb-table/aws"
-
-  name     = "my-table"
-  hash_key = "id"
-
-  attributes = [
-    {
-      name = "id"
-      type = "N"
-    }
-  ]
-
-  tags = {
-    Terraform   = "true"
-    Environment = "staging"
+resource "aws_dynamodb_table" "students_table" {
+  name             = "Students"
+  hash_key         = "id"
+  billing_mode   = "PROVISIONED"
+  read_capacity  =100 
+  write_capacity = 100
+  attribute {
+    name = "id"
+    type = "S"
   }
 }
